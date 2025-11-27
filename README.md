@@ -1,3 +1,126 @@
+## 🚀 Dotfiles/Starship 環境構築と変更管理のフロー（完全統合版）
+
+このガイドは、新しいマシンでのゼロからの環境構築（セットアップ）と、既存マシンでの設定変更をGitHubに同期する作業（変更管理）の両方を網羅しています。
+
+### 段階 I: 新しい環境へのセットアップ (New Machine Setup)
+
+新しいPCやサーバーにDotfilesを導入する際に、上から順に実行してください。
+
+#### ステップ 1: 必須ツールのインストールと準備
+
+| 環境 | コマンド |
+| :--- | :--- |
+| **Linux (Ubuntu/WSL)** | `sudo apt update && sudo apt install git stow curl` |
+| **macOS** | `brew install git stow curl` |
+| **MSYS2/MinGW64** | `pacman -Sy && pacman -S git stow` |
+
+#### ステップ 2: Dotfilesリポジトリのクローンと機密情報ファイルの作成 🔒
+
+```bash
+cd ~
+# リポジトリをクローン
+git clone <あなたのGitHubリポジトリのURL> dotfiles
+cd dotfiles
+
+# 機密情報ファイルを作成・保護（Git管理外のAPIキーなどを記述）
+vim ~/.bashrc_secrets
+chmod 600 ~/.bashrc_secrets
+```
+
+#### ステップ 3: Nerd Font (BlexMono) のインストールとターミナル設定 🎨
+
+Starshipのアイコンや記号表示に必須です。
+
+1.  **BlexMono Nerd Fontのインストール**
+    ```bash
+    mkdir -p /tmp/blex-font && cd /tmp/blex-font
+    curl -LO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/IBMPlexMono.zip
+    unzip IBMPlexMono.zip
+    mkdir -p ~/.local/share/fonts/BlexMono
+    cp *.ttf ~/.local/share/fonts/BlexMono/
+    cd ~ && rm -rf /tmp/blex-font
+    fc-cache -fv
+    ```
+2.  **ターミナル設定の変更 (必須):**
+    ターミナルアプリを再起動し、**[設定]** でフォントを「**BlexMono Nerd Font**」に手動で変更します。
+
+#### ステップ 4: Starshipのインストール（PATHの確保）
+
+```bash
+# Rust/Cargoのインストール
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source "$HOME/.cargo/env" # PATHを即座に反映
+# Starshipのインストール
+cargo install starship --locked
+```
+
+#### ステップ 5: 既存設定の退避と Dotfiles の適用 (Stow) 🔗
+
+```bash
+# 既存の .bashrc をバックアップして削除
+if [ -f ~/.bashrc ]; then
+    cp ~/.bashrc ~/.bashrc.bak_$(date +%Y%m%d_%H%M%S)
+    rm ~/.bashrc
+fi
+
+# Stowでシンボリックリンクを作成
+cd ~/dotfiles
+stow bash 
+stow starship 
+```
+
+#### ステップ 6: 設定の最終反映
+
+```bash
+# .bashrcを再読み込みし、環境構築完了
+source ~/.bashrc
+```
+
+-----
+
+### 段階 II: 既存環境での設定変更と同期 (Change Management)
+
+既にセットアップが完了している環境で、`.bashrc` や `starship.toml` を修正し、その変更をGitHubに保存する手順です。
+
+#### ステップ A: 設定ファイルの編集と動作確認
+
+1.  **設定ファイルを編集:**
+    リポジトリ内の元のファイルを編集します（例: `~/dotfiles/bash/.bashrc`）。
+    ```bash
+    vim ~/dotfiles/bash/.bashrc 
+    # 例: Starship初期化ブロックをファイル末尾に移動したり、新しいエイリアスを追加
+    ```
+2.  **動作確認:**
+    設定を現在のシェルに適用し、変更が正しく動作するか確認します。
+    ```bash
+    source ~/.bashrc
+    ```
+
+#### ステップ B: 変更のコミットとGitHubへのプッシュ 🚀
+
+1.  **作業ディレクトリへの移動:**
+    ```bash
+    cd ~/dotfiles
+    ```
+2.  **変更されたファイルをステージングエリアに追加:**
+    ```bash
+    git add bash/.bashrc starship/.config/starship.toml 
+    # 変更したファイルを全て追加
+    ```
+3.  **変更をコミット:**
+    ```bash
+    git commit -m "refactor: optimize starship init block and add new alias"
+    ```
+4.  **GitHubへのプッシュ:**
+    ```bash
+    git push origin main
+    ```
+
+-----
+
+**この手順のファイル名としては、リポジトリのトップに「`README.md`」として配置するか、「`SETUP_FLOW.md`」のような名前を付けることをお勧めします。**
+
+
 ## 🚀 DotfilesとStarshipの環境構築手順（最終統合版）
 
 この手順は、GitHubで管理している Dotfiles と Starship 環境を、**Linux/WSL/macOS/MSYS2**のどの環境でもシームレスに再現するための完全ガイドです。
