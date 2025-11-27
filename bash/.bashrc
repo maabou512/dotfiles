@@ -76,8 +76,9 @@ export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 # --------------------------------------------------------------------
 
 # Starship (カスタムプロンプト) の初期化
-# 🚨 PATH設定後に実行すること！
 if command -v starship > /dev/null; then
+    # 🚨 修正ポイント: 既存のプロンプト定義をクリアし、Starshipを強制適用する
+    unset PS1 
     eval "$(starship init bash)"
 fi
 
