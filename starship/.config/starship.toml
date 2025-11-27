@@ -1,0 +1,111 @@
+#format = '$all'
+format = '''
+$os\\
+[┌╴\[](fg:#26A269)[$username](bold blue)[\]](fg:#26A269)\\
+$directory\\
+$time\\
+$git_branch
+  [└─](fg:#26A269) $python$character
+'''
+## ref: Kali linux like setting
+## see: https://gist.github.com/mIcHyAmRaNe/a6ee5ca3311d61ae6f181e691643925d
+## 
+# format = '''
+# [┌╴\(](bold green)[$username㉿$hostname](bold blue)[\)](bold green)$os $time
+# | $all[└─](green) $character
+# '''
+
+continuation_prompt = '[❯❯ ](fg:blue)'
+
+[os]
+format = "[$symbol](#E95420)"
+disabled = false
+
+[os.symbols]
+#Macos = " " #リンゴのicon
+Ubuntu = " " #Ubuntuのicon
+
+
+[directory]
+style = "fg:blue"
+format = "[$path]($style)"
+truncation_length = 10
+truncation_symbol = "..."
+truncate_to_repo = false
+read_only = " 󰌾" #鍵のicon
+
+[character]
+#success_symbol = '[❯❯❯](fg:blue)'
+#error_symbol = '[❯❯❯](fg:red)'
+success_symbol = "[\\$](fg:green)"
+error_symbol = "[\\$](fg:red)"
+
+[username]
+#style_user = "white bold"
+style_user = "fg:#26A269"
+style_root = "black bold"
+format = "[$user]($style)"
+disabled = false
+show_always = true
+
+
+#[git_status]
+#style = "fg:blue"
+#format = '([\[$all_status$ahead_behind\]]($style))'
+
+
+[git_branch]
+format = " [$symbol $branch]($style)"
+style = "fg:#888888"
+symbol = "on "
+#symbol = " "
+
+
+# [git_metrics]
+# disabled = false
+# added_style = 'bold blue'
+# format = '\([+$added]($added_style)/[-$deleted]($deleted_style)\)'
+# only_nonzero_diffs = true
+
+
+[package]
+disabled = true
+
+[time]
+disabled = false
+time_format = "%FT%X%:z" # Hour:Minute Format
+style = "bg:#33658A"
+format = '[[  $time](fg:#888888)]($style)'
+
+# [nodejs]
+# style = "#ffc0cb"
+# format = " [$symbol $version]($style)"
+# symbol = ''
+# 
+# 
+# [python]
+# detect_extensions = ['py', 'ipynb']
+# pyenv_version_name = true
+# style = "yellow"
+# format = ' [${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+ [python]
+#format = "via [${symbol}${pyenv_prefix}${version} (${virtualenv})]($style) "
+format = "[\\(${virtualenv}\\) ]($style)"
+pyenv_version_name = false
+pyenv_prefix = "pyenv "
+style = "green bold"
+# 
+# 
+# [java]
+# format = ' [${symbol}(${version} )]($style)'
+# 
+# 
+# [cmd_duration]
+# show_milliseconds = true
+# format = ' [󱫌 $duration]($style)'
+# #min_time = 10
+
+
+
+
+
