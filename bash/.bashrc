@@ -43,10 +43,6 @@ export PATH="$WASMTIME_HOME/bin:$PATH"
 export GOPATH=$HOME/go/
 export PATH=$PATH:/usr/local/go/bin:/home/tani/bin:$HOME/go/bin
 
-# Google Cloud 認証情報 (GOOSGLE_APPLICATION_CREDENTIALS)
-# 環境移行を考慮し、もし ~/.bashrc_secrets に移動可能ならそちらを推奨
-export GOOGLE_APPLICATION_CREDENTIALS="/home/tani/.config/gcloud/cte-hackmd-trial-52c9ecf3cc7e.json"
-
 # APIキーなどの機密情報ファイルを読み込む (前回の手順で分離したファイル)
 if [ -f "$HOME/.bashrc_secrets" ]; then
     . "$HOME/.bashrc_secrets"
