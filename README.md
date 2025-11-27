@@ -118,10 +118,6 @@ source ~/.bashrc
 
 -----
 
-**この手順のファイル名としては、リポジトリのトップに「`README.md`」として配置するか、「`SETUP_FLOW.md`」のような名前を付けることをお勧めします。**
-
-
-## 🚀 DotfilesとStarshipの環境構築手順（最終統合版）
 
 この手順は、GitHubで管理している Dotfiles と Starship 環境を、**Linux/WSL/macOS/MSYS2**のどの環境でもシームレスに再現するための完全ガイドです。
 
