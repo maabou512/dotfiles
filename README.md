@@ -1,4 +1,4 @@
-## 🚀 Dotfiles/Starship 環境構築と変更管理のフロー（最終統合版 + Vimrc対応）
+## 🚀 Dotfiles/Starship/Vim 環境構築と変更管理のフロー（最終統合版）
 
 このガイドは、新しいマシンでのゼロからのセットアップと、既存マシンでの設定変更をGitHubに同期する作業の両方を網羅しています。
 
@@ -66,39 +66,42 @@ Rustをビルドせず、最も簡単な方法で導入します。
 
 `stow` を使わず、**`ln -s`** コマンドでシンボリックリンクを作成します。
 
-1.  **既存設定の退避 (重要):**
+1.  **Vimプラグイン管理システムのインストール (vim-plug 本体)**
+
+    ```bash
+    # Vimプラグインのautoloadディレクトリを作成
+    mkdir -p ~/.vim/autoload
+
+    # vim-plugをダウンロードし、autoload内に配置
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    ```
+
+2.  **既存設定の退避とシンボリックリンクの作成:**
 
     ```bash
     cd ~
-    # .bashrc の退避
-    if [ -f ~/.bashrc ]; then
-        cp ~/.bashrc ~/.bashrc.bak_$(date +%Y%m%d_%H%M%S)
-        rm ~/.bashrc
-    fi
-    # starship.toml の退避
-    if [ -f ~/.config/starship.toml ]; then
-        cp ~/.config/starship.toml ~/.config/starship.toml.bak
-        rm ~/.config/starship.toml
-    fi
-    # .vimrc の退避
-    if [ -f ~/.vimrc ]; then
-        cp ~/.vimrc ~/.vimrc.bak_$(date +%Y%m%d_%H%M%S)
-        rm ~/.vimrc
-    fi
+    # 既存ファイルの退避と削除（.bashrc, starship.toml, .vimrc）
+    if [ -f ~/.bashrc ]; then cp ~/.bashrc ~/.bashrc.bak_$(date +%Y%m%d_%H%M%S); rm ~/.bashrc; fi
+    if [ -f ~/.config/starship.toml ]; then cp ~/.config/starship.toml ~/.config/starship.toml.bak; rm ~/.config/starship.toml; fi
+    if [ -f ~/.vimrc ]; then cp ~/.vimrc ~/.vimrc.bak_$(date +%Y%m%d_%H%M%S); rm ~/.vimrc; fi
+
+    # Dotfilesからシンボリックリンクを作成
+    ln -s ~/dotfiles/bash/.bashrc ~/.bashrc
+    ln -s ~/dotfiles/vim/.vimrc ~/.vimrc
+    mkdir -p ~/.config # 必要であれば作成
+    ln -s ~/dotfiles/starship/.config/starship.toml ~/.config/starship.toml
     ```
 
-2.  **シンボリックリンクの作成:**
+3.  **プラグインのインストール:**
+    Vimを起動し、`.vimrc`に記述されているプラグインをダウンロードします。
 
     ```bash
-    # .bashrc のリンク
-    ln -s ~/dotfiles/bash/.bashrc ~/.bashrc
-
-    # .vimrc のリンク
-    ln -s ~/dotfiles/vim/.vimrc ~/.vimrc
-
-    # Starship設定ディレクトリのリンク
-    mkdir -p ~/.config # ディレクトリが存在しない場合に備えて作成
-    ln -s ~/dotfiles/starship/.config/starship.toml ~/.config/starship.toml
+    vim
+    # Vim内で以下のコマンドを実行
+    :PlugInstall
+    # (インストールが完了したら)
+    :quitall
     ```
 
 -----
@@ -136,8 +139,8 @@ PowerShellのプロファイルに初期化コマンドを追加します。
     ```bash
     # Bash/Zshの場合、.bashrcを再読み込み
     source ~/.bashrc
-    # Vimを起動して設定の変更を確認
-    vim
+    # Vimプラグインリストを変更した場合は、必ず実行
+    vim +PlugInstall +qall 
     ```
 
 #### ステップ B: 変更のコミットとGitHubへのプッシュ 🚀
