@@ -7,8 +7,11 @@
 #$git_branch
 #  [└─](fg:#26A269) $python$character
 #'''
-format = '''[┌╴](fg:#26A269)$os [\[$username](fg:#26A269)[\]](fg:#26A269) $directory $time $git_branch
-[└─ ](fg:#26A269) $python$character'''
+
+format = '''[┌╴$os \[](fg:#26A269)[$username](bold blue)[\]](fg:#26A269) $directory $time $git_branch
+[└─](fg:#26A269) $python$character'''
+
+
 
 ## ref: Kali linux like setting
 ## see: https://gist.github.com/mIcHyAmRaNe/a6ee5ca3311d61ae6f181e691643925d
