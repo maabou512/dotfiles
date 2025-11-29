@@ -1,4 +1,4 @@
-## 🚀 Dotfiles/Starship 環境構築と変更管理のフロー（最終統合版）
+## 🚀 Dotfiles/Starship 環境構築と変更管理のフロー（最終統合版 + Vimrc対応）
 
 このガイドは、新しいマシンでのゼロからのセットアップと、既存マシンでの設定変更をGitHubに同期する作業の両方を網羅しています。
 
@@ -10,9 +10,8 @@
 
 | 環境 | コマンド |
 | :--- | :--- |
-| **Linux (Ubuntu/WSL)** | `sudo apt update && sudo apt install git stow curl` |
-| **macOS** | `brew install git stow curl` |
-| **Windows (Git Bash/Winget)** | **Git** がインストール済みであることを確認 |
+| **Linux / macOS** | `sudo apt update && sudo apt install git stow curl` (Linux) / `brew install git stow curl` (macOS) |
+| **Windows(Git Bash)** | **Git** がインストール済みであることを確認 |
 
 -----
 
@@ -37,7 +36,7 @@ Starshipのアイコンや記号表示に必須です。
 
 1.  **BlexMono Nerd Fontのインストール**
       * **Windowsの場合:** フォントファイルをダウンロードし、ダウンロードした `.ttf` ファイルまたは `.otf` ファイルを**右クリック**し、「**インストール**」を選択してインストールします。
-      * **Linux/WSLの場合:**
+      * **Linux / macOSの場合:**
         ```bash
         mkdir -p /tmp/blex-font && cd /tmp/blex-font
         curl -LO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/IBMPlexMono.zip
@@ -54,19 +53,18 @@ Starshipのアイコンや記号表示に必須です。
 
 #### ステップ 4: Starshipのインストール（簡易版） 🚀
 
-**Rustをビルドせず、最も簡単な方法で導入します。**
+Rustをビルドせず、最も簡単な方法で導入します。
 
 | 環境 | 推奨されるインストール方法 |
 | :--- | :--- |
-| **Windows (Winget)** | **PowerShell** または **Windows Terminal** で実行: `winget install Starship.Starship` |
-| **Windows (Git Bash)** | **Git Bash** で実行: `curl -sS https://starship.rs/install.sh | sh` |
-| **Linux/macOS** | **Bash/Zsh** で実行: `curl -sS https://starship.rs/install.sh | sh` |
+| **Windows(Winget)** | **PowerShell** または **Windows Terminal** で実行: `winget install Starship.Starship` |
+| **Linux / Windows(Git Bash) / macOS** | **Bash/Zsh** で実行: `curl -sS https://starship.rs/install.sh | sh` |
 
 -----
 
 #### ステップ 5: Dotfilesの配置とシンボリックリンクの作成 🔗
 
-Stowを使わず、**`ln -s`** コマンドでシンボリックリンクを作成します。
+`stow` を使わず、**`ln -s`** コマンドでシンボリックリンクを作成します。
 
 1.  **既存設定の退避 (重要):**
 
@@ -82,6 +80,11 @@ Stowを使わず、**`ln -s`** コマンドでシンボリックリンクを作�
         cp ~/.config/starship.toml ~/.config/starship.toml.bak
         rm ~/.config/starship.toml
     fi
+    # .vimrc の退避
+    if [ -f ~/.vimrc ]; then
+        cp ~/.vimrc ~/.vimrc.bak_$(date +%Y%m%d_%H%M%S)
+        rm ~/.vimrc
+    fi
     ```
 
 2.  **シンボリックリンクの作成:**
@@ -90,8 +93,11 @@ Stowを使わず、**`ln -s`** コマンドでシンボリックリンクを作�
     # .bashrc のリンク
     ln -s ~/dotfiles/bash/.bashrc ~/.bashrc
 
-    # Starship設定ディレクトリのリンク (必要に応じて .config も作成)
-    mkdir -p ~/.config
+    # .vimrc のリンク
+    ln -s ~/dotfiles/vim/.vimrc ~/.vimrc
+
+    # Starship設定ディレクトリのリンク
+    mkdir -p ~/.config # ディレクトリが存在しない場合に備えて作成
     ln -s ~/dotfiles/starship/.config/starship.toml ~/.config/starship.toml
     ```
 
@@ -99,7 +105,7 @@ Stowを使わず、**`ln -s`** コマンドでシンボリックリンクを作�
 
 #### ステップ 6: 設定の最終反映
 
-##### 【Bash/Zsh 環境（Linux/macOS/Git Bash）の場合】
+##### 【Bash/Zsh 環境（Linux / Windows(Git Bash) / macOS）の場合】
 
 ```bash
 source ~/.bashrc
@@ -122,13 +128,16 @@ PowerShellのプロファイルに初期化コマンドを追加します。
 #### ステップ A: 設定ファイルの編集と動作確認
 
 1.  **設定ファイルを編集:**
-    リポジトリ内のファイルを直接編集します（例: `~/dotfiles/bash/.bashrc`）。
+    リポジトリ内のファイルを直接編集します（例: `~/dotfiles/vim/.vimrc`）。
     ```bash
-    vim ~/dotfiles/bash/.bashrc 
+    vim ~/dotfiles/vim/.vimrc 
     ```
 2.  **動作確認:**
     ```bash
+    # Bash/Zshの場合、.bashrcを再読み込み
     source ~/.bashrc
+    # Vimを起動して設定の変更を確認
+    vim
     ```
 
 #### ステップ B: 変更のコミットとGitHubへのプッシュ 🚀
@@ -138,12 +147,13 @@ PowerShellのプロファイルに初期化コマンドを追加します。
     cd ~/dotfiles
     ```
 2.  **変更をステージングエリアに追加:**
+    変更したファイルを全て追加します。
     ```bash
-    git add bash/.bashrc starship/.config/starship.toml 
+    git add bash/.bashrc starship/.config/starship.toml vim/.vimrc
     ```
 3.  **変更をコミット:**
     ```bash
-    git commit -m "feat: updated settings for better performance"
+    git commit -m "feat: add .vimrc and optimize bashrc"
     ```
 4.  **GitHubへのプッシュ:**
     ```bash
