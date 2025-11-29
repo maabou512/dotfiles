@@ -1,3 +1,7 @@
+承知いたしました。これまでの議論を全て反映し、**Vim-plug対応、Stow不使用、Windows環境最適化**を行った**Dotfiles環境構築と変更管理の最終統合手順書**を以下に示します。
+
+-----
+
 ## 🚀 Dotfiles/Starship/Vim 環境構築と変更管理のフロー（最終統合版）
 
 このガイドは、新しいマシンでのゼロからのセットアップと、既存マシンでの設定変更をGitHubに同期する作業の両方を網羅しています。
@@ -58,7 +62,7 @@ Rustをビルドせず、最も簡単な方法で導入します。
 | 環境 | 推奨されるインストール方法 |
 | :--- | :--- |
 | **Windows(Winget)** | **PowerShell** または **Windows Terminal** で実行: `winget install Starship.Starship` |
-| **Linux / Windows(Git Bash) / macOS** | **Bash/Zsh** で実行: `curl -sS https://starship.rs/install.sh | sh` |
+| **Linux / Windows(Git Bash) / macOS** | **Bash/Zsh** で実行: `curl -sS https://starship.rs/install.sh \| sh` |
 
 -----
 
@@ -156,7 +160,7 @@ PowerShellのプロファイルに初期化コマンドを追加します。
     ```
 3.  **変更をコミット:**
     ```bash
-    git commit -m "feat: add .vimrc and optimize bashrc"
+    git commit -m "feat: update vimrc, starship, and bash settings"
     ```
 4.  **GitHubへのプッシュ:**
     ```bash
