@@ -1,3 +1,9 @@
+ご要望に基づき、「ステップ 3」の Windows のインストール手順にダウンロードURLの例を追記しました。
+
+以下が修正後の手順書全体です。
+
+-----
+
 ## 🚀 Dotfiles/Starship/Vim 環境構築と変更管理のフロー（最終統合版）
 
 このガイドは、新しいマシンでのゼロからのセットアップと、既存マシンでの設定変更をGitHubに同期する作業の両方を網羅しています。
@@ -35,7 +41,10 @@ chmod 600 ~/.bashrc_secrets
 Starshipのアイコンや記号表示に必須です。
 
 1.  **BlexMono Nerd Fontのインストール**
-      * **Windowsの場合:** フォントファイルをダウンロードし、ダウンロードした `.ttf` ファイルまたは `.otf` ファイルを**右クリック**し、「**インストール**」を選択してインストールします。
+
+      * **Windowsの場合:**
+        フォントファイルをダウンロードします（例: **`https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/IBMPlexMono.zip`** からダウンロード）。
+        ダウンロードした **`.ttf`** ファイルまたは **`.otf`** ファイルを**右クリック**し、「**インストール**」を選択してインストールします。
       * **Linux / macOSの場合:**
         ```bash
         mkdir -p /tmp/blex-font && cd /tmp/blex-font
@@ -46,8 +55,21 @@ Starshipのアイコンや記号表示に必須です。
         cd ~ && rm -rf /tmp/blex-font
         fc-cache -fv
         ```
-2.  **ターミナル設定の変更 (必須):**
-    ターミナルアプリを再起動し、**[設定]** でフォントを「**BlexMono Nerd Font**」に手動で変更します。
+
+2.  **ターミナル設定の変更 (必須 - VS Codeを例として):**
+    インストールしたフォントをターミナルやエディタの統合ターミナルで使用するように設定します。
+
+    > **⚠️ 注意:** Nerd Fontを正しく表示させるには、「**`BlexMono Nerd Font`**」ではなく、「**`BlexMono Nerd Font Mono`**」のように末尾に **`Mono`** が付くフォント名を選択する必要があります。`Mono` を含まないフォント名を選ぶと、文字幅が正しく適用されず、アイコンがうまく表示されない可能性があります。
+
+    **VS Code (Visual Studio Code) の場合:**
+
+    1.  VS Codeを開き、**[設定]** (Windows/Linux: `Ctrl+,`、macOS: `Cmd+,`) を開きます。
+    2.  検索バーで **`terminal.integrated.fontFamily`** を検索します。
+    3.  この設定の値を以下のように変更します。
+        ```json
+        "terminal.integrated.fontFamily": "BlexMono Nerd Font Mono"
+        ```
+    4.  VS Codeを再起動し、統合ターミナルで Starship のプロンプトが正しく表示されるか確認してください。
 
 -----
 
