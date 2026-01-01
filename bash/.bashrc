@@ -137,7 +137,9 @@ alias dmesg='sudo dmesg -T -L=always'
 # trash-put があれば rm を上書き
 if type trash-put &> /dev/null
 then
-    alias rm=trash-put
+    #alias rm=trash-put
+    alias rm='echo "rm is disabled. Use \"trash-put\" to delete, or \"/bin/rm\" for permanent."; false'
+    alias del='trash-put'
 fi
 
 # --------------------------------------------------------------------
