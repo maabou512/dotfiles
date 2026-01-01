@@ -43,6 +43,13 @@ export PATH="$WASMTIME_HOME/bin:$PATH"
 export GOPATH=$HOME/go/
 export PATH=$PATH:/usr/local/go/bin:/home/tani/bin:$HOME/go/bin
 
+# lessの設定
+export LESS='-R -i -N -S -M -X'
+### -S (Chop long lines): 長い行を折り返さず、横スクロールにします。ログは一行が長いことが多いので、折り返されるより一行で表示された方が圧倒的に読みやすくなります（左右の矢印キーで動けます）。
+### -M (Long prompt): 画面の一番下に「今、全体の何パーセントを読んでいるか」や「行番号」を常に詳しく表示します。
+### -X (No init): less を終了したときに、画面に表示されていた内容をターミナルに残します。これがないと、q で閉じた瞬間にログが消えてしまい、「さっきのあの数字なんだっけ？」と開き直す羽目になります。
+
+
 # APIキーなどの機密情報ファイルを読み込む (前回の手順で分離したファイル)
 if [ -f "$HOME/.bashrc_secrets" ]; then
     . "$HOME/.bashrc_secrets"
@@ -120,6 +127,12 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+
+# dmesg のエイリアス
+alias dmesg='sudo dmesg -T -L=always'
+### -T: 常に「人間が読める時刻」になります。
+### -L=always: パイプ（| less）に渡しても色が消えなくなります。
+### sudo: いちいち sudo と打たなくてよくなります（パスワードは聞かれますが）。
 
 # trash-put があれば rm を上書き
 if type trash-put &> /dev/null
