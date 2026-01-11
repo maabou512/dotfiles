@@ -138,7 +138,7 @@ alias dmesg='sudo dmesg -T -L=always'
 if type trash-put &> /dev/null
 then
     #alias rm=trash-put
-    alias rm='echo "rm is disabled. Use \"trash-put\" to delete, or \"/bin/rm\" for permanent."; false'
+    alias rm='echo "rm is disabled. Use \"trash-put\" or \"del\" command  to delete, or \"/bin/rm\" for permanent."; false'
     alias del='trash-put'
 fi
 
@@ -210,7 +210,25 @@ if ! shopt -oq posix; then
 fi
 
 # --------------------------------------------------------------------
-# 8. デバイス固有の設定 (コメントアウト)
+# 8. OSC 52 設定（接続元でクリップボードを使える）
+# --------------------------------------------------------------------
+
+# クリップボードに送る関数 "cb"
+copy_osc52() {
+  local buf
+  if [ -t 0 ]; then
+    buf="$*"
+  else
+    buf=$(cat -)
+  fi
+  # base64でエンコードしてターミナルに送信
+  printf "\e]52;c;$(printf %s "$buf" | base64 | tr -d '\n')\a"
+}
+alias cb='copy_osc52'
+
+
+# --------------------------------------------------------------------
+# 9. デバイス固有の設定 (コメントアウト)
 # --------------------------------------------------------------------
 # Keymap変更、TrackPoint無効化など、マシンごとに異なる設定はここに残し、必要に応じて有効化してください。
 # #xinput set-prop "TPPS/2 Elan TrackPoint" "Device Enabled" 0
